@@ -1,0 +1,78 @@
+/* 同一行的卡片等高，窄屏改为单列 */
+.settings-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-section); }
+.settings > :not(.page-title) + .settings-cols { margin-top: var(--gap-section); }
+.settings-cols > .group { display: flex; flex-direction: column; }
+.settings-cols .settings-box { flex: 1; }
+.settings-cols .group + .group { margin-top: 0; }
+.settings-box { padding: 20px 22px; }
+.settings-box > * + * { border-top: 0; }
+
+/* 搜索服务：四列两行，DuckDuckGo 名字长，占两格 */
+.search-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.search-option:first-child { grid-column: span 2; }
+.search-option { position: relative; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; height: 34px; padding: 0 14px; border-radius: var(--r-pill);
+  background: var(--box); border: 1px solid var(--line); color: var(--ink-2); font-size: var(--fs-small); font-weight: 500; cursor: pointer;
+  transition: background var(--t-hover), border-color var(--t-hover), color var(--t-hover); }
+.search-option:hover { background: var(--glass-hi); color: var(--ink); }
+.search-option input { position: absolute; opacity: 0; pointer-events: none; }
+.search-option:has(input:focus-visible) { outline: 2px solid color-mix(in srgb, var(--accent) 70%, var(--mix-to)); outline-offset: 2px; }
+.search-option[data-checked='true'] { background: color-mix(in srgb, var(--accent) 18%, transparent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); color: var(--ink); font-weight: 600; }
+.settings-box { display: flex; flex-direction: column; }
+.settings-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 16px; margin-top: auto; padding-top: 16px; }
+.settings-feedback { flex: 1 1 160px; min-width: 0; display: grid; gap: 4px; color: var(--ink-3); font-size: var(--fs-small); line-height: 1.6; overflow-wrap: anywhere; }
+.settings-feedback [data-tone='error'] { color: color-mix(in srgb, var(--clay) 70%, var(--mix-to)); }
+/* 测试结果始终占一行：出现和消失都不改变卡片高度，也不挤动输入框 */
+.settings-probe-result { min-height: 1.6em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.settings-actions { display: flex; flex: none; gap: 8px; margin-left: auto; }
+/* 联网搜索的 Key 与模型的 Key 都靠近操作栏 */
+.settings-box .field:has(.key-input) { margin-top: 16px; }
+.settings-box:has(.search-options) .field:has(.key-input) { margin-top: auto; padding-top: 16px; }
+.settings-box:has(.search-options) .settings-bar { margin-top: 0; }
+/* 隐私：开关一行，说明缩进对齐开关后面的文字；样例收起时不占地方 */
+.settings-privacy-head { display: grid; gap: 6px; }
+.settings-privacy-toggle { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: var(--fs-body); font-weight: 600; cursor: pointer; }
+.settings-privacy-toggle input { flex: none; width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+.settings-privacy-toggle input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.settings-privacy-head p { margin: 0 0 0 26px; color: var(--ink-3); font-size: var(--fs-small); line-height: 1.6; overflow-wrap: anywhere; }
+.settings-privacy > .field { margin-top: 16px; }
+.settings-privacy-sample { display: grid; gap: 8px; margin: 16px 0 0; padding: 12px 14px; border-radius: var(--r-inner); background: var(--box); border: 1px solid var(--line); }
+.settings-privacy-sample > div { display: grid; grid-template-columns: 3em minmax(0, 1fr); gap: 10px; align-items: baseline; }
+.settings-privacy-sample dt { color: var(--ink-3); font-size: var(--fs-tiny); }
+.settings-privacy-sample dd { margin: 0; color: var(--ink-2); font-size: var(--fs-small); line-height: 1.6; overflow-wrap: anywhere; }
+.settings-mcp code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12.5px; color: var(--ink-2); }
+.settings-note { margin: 24px 0 0; color: var(--ink-3); font-size: var(--fs-small); }
+
+/* Key：右边一个按住显示的眼睛 */
+.key-input { position: relative; display: block; }
+.key-input .input { padding-right: 48px; }
+.key-eye { position: absolute; top: 50%; right: 6px; transform: translateY(-50%); width: 34px; height: 34px; display: grid; place-items: center;
+  border-radius: 50%; color: var(--ink-3); touch-action: none; user-select: none; transition: background var(--t-hover), color var(--t-hover); }
+.key-eye:hover:not(:disabled), .key-eye:active:not(:disabled) { background: var(--glass-hi); color: var(--ink); }
+.key-eye:disabled { opacity: 0.35; }
+
+.settings-mcp { display: grid; align-content: start; gap: 14px; }
+.settings-mcp-note { margin: 0; color: var(--ink-2); font-size: var(--fs-small); line-height: 1.7; }
+/* 发给 Agent 的一段话：按宽度换行，不横向滚动 */
+.settings-mcp pre.settings-mcp-say { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--sans); font-size: var(--fs-small); line-height: 1.7; }
+.settings-mcp-row { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 12px; }
+.settings-mcp-row > span { color: var(--ink-3); font-size: var(--fs-small); font-weight: 600; }
+.settings-mcp-config { align-items: start; }
+/* 复制：只有一个小图标。地址的跟在地址后面，配置的在框内右上角 */
+.copy-icon { display: inline-grid; place-items: center; width: 28px; height: 28px; flex: none; color: var(--ink-3); transition: color var(--t-hover); }
+.copy-icon:hover { color: var(--ink); }
+.copy-icon svg { width: 16px; height: 16px; }
+.settings-mcp-url { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.settings-mcp-url code { overflow-wrap: anywhere; }
+.settings-mcp-pre { position: relative; min-width: 0; }
+.settings-mcp-pre .copy-icon { position: absolute; top: 6px; right: 6px; }
+.settings-mcp pre { margin: 0; padding: 12px 40px 12px 14px; border-radius: var(--r-inner); background: var(--box); border: 1px solid var(--line); overflow-x: auto;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12.5px; line-height: 1.6; color: var(--ink-2); }
+
+@media (max-width: 960px) { .settings-cols { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 720px) {
+  .settings-mcp-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+
+/* 示例数据与引导 */
+.settings-sample { display: grid; align-content: start; gap: 16px; }
+.settings-sample-actions { display: flex; flex-wrap: wrap; gap: 10px; }

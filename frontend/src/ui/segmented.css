@@ -1,0 +1,32 @@
+.seg { position: relative; display: inline-flex; padding: 4px; border-radius: var(--r-pill); }
+.seg > button, .seg > a { position: relative; z-index: 1; padding: 8px 22px; border-radius: var(--r-pill); color: var(--ink-2); font-weight: 500;
+  white-space: nowrap; transition: color var(--t-fade); }
+.seg > button:hover, .seg > a:hover { color: var(--ink); }
+.seg > [aria-selected='true'], .seg > [aria-current='page'] { color: var(--ink); font-weight: 600; }
+.seg-pill { position: absolute; left: 0; top: 4px; bottom: 4px; border-radius: var(--r-pill); background: var(--glass-press);
+  border: 1px solid var(--line-hi); box-shadow: 0 4px 14px rgb(0 0 0 / 0.12);
+  transition: transform var(--t-spring) var(--spring), width var(--t-spring) var(--spring), opacity var(--t-fade); }
+
+/* 胶囊里最右边的小控件，和分段之间一条竖线 */
+.seg-trailing { position: relative; z-index: 1; display: flex; align-items: center; margin-left: 4px; padding-left: 4px; border-left: 1px solid var(--line); }
+
+/* 占满一行，各项平分 */
+.seg[data-fill='true'] { display: flex; width: 100%; }
+.seg[data-fill='true'] > * { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 12px; }
+
+/* 大号：顶栏的主导航 */
+.seg[data-size='lg'] > * { padding: 8px 26px; font-size: var(--fs-ui); }
+
+/* 放不下时（窗口缩到半屏、手机）：左右滑动，哪边还有内容哪边就渐隐。放得下时不裁切，选中块的阴影照常显示 */
+.seg { max-width: 100%; }
+.seg[data-scroll='true'] { overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
+.seg[data-scroll='true']::-webkit-scrollbar { display: none; }
+.seg[data-scroll='true'] > * { flex: none; }
+.seg[data-more-end='true'] { -webkit-mask-image: linear-gradient(90deg, black calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, black calc(100% - 40px), transparent); }
+.seg[data-more-start='true'] { -webkit-mask-image: linear-gradient(90deg, transparent, black 40px); mask-image: linear-gradient(90deg, transparent, black 40px); }
+.seg[data-more-start='true'][data-more-end='true'] { -webkit-mask-image: linear-gradient(90deg, transparent, black 40px, black calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, transparent, black 40px, black calc(100% - 40px), transparent); }
+
+@media (max-width: 720px) {
+  .seg > * { padding: 8px 11px; }
+  .seg[data-size='lg'] > * { padding: 7px 16px; font-size: var(--fs-body); }
+}

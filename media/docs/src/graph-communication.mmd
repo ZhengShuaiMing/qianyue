@@ -1,0 +1,9 @@
+flowchart LR
+    S0((START)) --> load_context["load_context<br/>读取材料"]
+    load_context --> precheck["precheck<br/>前置检查"]
+    precheck --> E0((END))
+    precheck --> advise["advise<br/>分析并起草（ReAct）"]
+    advise -->|校验始终不合格| E0
+    advise --> wording["wording<br/>核对措辞"]
+    wording --> save["save<br/>保存建议"]
+    save --> E0

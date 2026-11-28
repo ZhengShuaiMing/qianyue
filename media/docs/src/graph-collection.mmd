@@ -1,0 +1,4 @@
+flowchart LR
+    S0((START)) --> collect["collect<br/>采集岗位（单个搜索）"]
+    collect -->|存在后续搜索| collect
+    collect -->|全部完成| E0((END))

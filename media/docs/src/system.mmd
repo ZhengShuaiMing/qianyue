@@ -1,0 +1,46 @@
+flowchart LR
+    subgraph 用户与客户端
+        UI["浏览器工作台<br/>React + TanStack Query"]
+        EXT["外部 Agent（可选）<br/>支持 Streamable HTTP"]
+        CLI["命令行工具<br/>collect.py、mock_interview.py"]
+    end
+    subgraph 后端进程["后端进程（uvicorn，仅监听 127.0.0.1）"]
+        API["FastAPI 接口 /api<br/>SSE、WebSocket"]
+        MCP["MCP Server /mcp<br/>可选协议入口"]
+        ASSIST["工作台内置助手（总控 Agent）<br/>app/graphs/assistant.py"]
+        OPS["共享操作<br/>app/tools/operations.py"]
+        RM["运行执行器 RunManager<br/>app/graphs/runner.py"]
+        GRAPHS["九张 LangGraph 图<br/>app/graphs/"]
+        RAG["检索服务<br/>app/rag/"]
+    end
+    subgraph 本机数据["本地持久化 data/"]
+        DB[("qianyue.db<br/>业务数据")]
+        CP[("checkpoints.db<br/>断点与对话")]
+        VEC[("vectors/<br/>Qdrant 本地模式")]
+        MODELS["models/<br/>Embedding、Rerank"]
+    end
+    subgraph 外部["外部服务"]
+        LLM["模型服务<br/>OpenAI 兼容接口"]
+        WEB["联网搜索与网页访问"]
+        CHROME["专用 Chrome<br/>调试协议 CDP"]
+    end
+
+    UI --> API
+    CLI --> API
+    EXT --> MCP
+    API --> ASSIST
+    API --> RM
+    ASSIST --> OPS
+    MCP --> OPS
+    OPS --> RM
+    RM --> GRAPHS
+    GRAPHS --> RAG
+    GRAPHS --> LLM
+    GRAPHS --> WEB
+    GRAPHS --> CHROME
+    ASSIST --> LLM
+    GRAPHS --> DB
+    RM --> CP
+    ASSIST --> CP
+    RAG --> VEC
+    RAG --> MODELS

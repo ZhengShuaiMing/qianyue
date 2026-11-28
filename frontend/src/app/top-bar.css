@@ -1,0 +1,37 @@
+/* 两边至少放得下自己，中间的导航在剩下的地方里居中，放不下就左右滑（ui/segmented.css） */
+.top { position: sticky; top: 0; z-index: 20; display: grid; grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr); column-gap: 16px; align-items: center; padding: 18px var(--page-x); }
+/* 没滚动时顶栏完全透明，背景的光一直铺到顶；滚动后才在后面加一层模糊，底边渐隐，不出现分界线 */
+.top::before { content: ''; position: absolute; inset: 0 0 -28px; z-index: -1; pointer-events: none; opacity: 0;
+  background: var(--top-tint); -webkit-backdrop-filter: blur(30px) saturate(1.5); backdrop-filter: blur(30px) saturate(1.5);
+  -webkit-mask-image: linear-gradient(black 60%, transparent); mask-image: linear-gradient(black 60%, transparent);
+  transition: opacity var(--t-fade) ease; }
+.top[data-scrolled='true']::before { opacity: 1; }
+
+.top-brand { display: flex; align-items: center; gap: 12px; justify-self: start; color: var(--ink); font: 700 26px/1 var(--serif); letter-spacing: 0.04em; }
+.top-mark { width: 36px; height: 36px; }
+.top-nav { min-width: 0; display: flex; justify-content: center; }
+.top-right { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+
+/* 后端和模型的状态 */
+.top-status { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: var(--r-pill);
+  color: var(--ink-2); font-size: var(--fs-small); font-weight: 500; white-space: nowrap; transition: background var(--t-hover), color var(--t-hover); }
+.top-status:hover { background: var(--glass-hi); color: var(--ink); }
+.top-status i { --dot: var(--ink-3); width: 7px; height: 7px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dot) 25%, transparent); }
+.top-status[data-tone='ok'] i { --dot: var(--sage); }
+.top-status[data-tone='warn'] i { --dot: var(--sand); }
+.top-status[data-tone='down'] i { --dot: var(--clay); }
+.top-status[data-tone='sample'] i { --dot: var(--teal); }
+.top-status[data-tone='wait'] i { animation: pulse 1.2s ease-in-out infinite; }
+
+/* 窗口窄（例如分半屏）时七个导航项要放得下：品牌只留图标，状态只留圆点，悬停能看到文字 */
+@media (max-width: 1180px) {
+  .top-brand-text, .top-status-text { display: none; }
+  .top-status { width: 40px; padding: 0; justify-content: center; }
+  .top-nav .seg[data-size='lg'] > * { padding-inline: 20px; }
+}
+
+@media (max-width: 720px) {
+  .top { grid-template-columns: 1fr auto; padding: 12px var(--page-x); gap: 12px; }
+  .top-status { display: none; }
+  .top-nav { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
+}

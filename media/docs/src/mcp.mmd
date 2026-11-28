@@ -1,0 +1,9 @@
+flowchart LR
+    EXT["外部 Agent（可选）"] -->|Streamable HTTP| S["MCPServer<br/>app/mcp_server/server.py"]
+    S --> OPS["共享操作 Workspace<br/>app/tools/operations.py"]
+    A["工作台内置助手的工具<br/>app/tools/workspace.py"] --> OPS
+    OPS --> DB[("qianyue.db")]
+    OPS --> RM["RunManager"]
+    S -->|"elicitation：保存材料前请求用户确认"| EXT
+    RM -.->|"没有 Key：模型请求挂起"| AB["AgentBroker<br/>app/llm/agent_model.py"]
+    AB -.->|"迁跃请你代答 / answer_model_request"| S

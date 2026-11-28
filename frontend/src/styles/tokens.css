@@ -1,0 +1,119 @@
+/* 设计变量。氛围光、玻璃胶囊、衬线大标题、不回弹的弹性动效；深色和浅色两套主题。
+   主题挂在 <html data-theme>，由 app/theme.ts 设置。 */
+
+/* --glow 是选中岗位的结论色，只给背景光用。登记成颜色类型后，换岗位时能慢慢过渡 */
+@property --glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8da2b8;
+}
+
+:root {
+  /* 字体随页面一起打包，不依赖用户电脑上装了什么 */
+  --serif: "Noto Serif SC", serif;
+  --sans: "Noto Sans SC Variable", sans-serif;
+
+  /* 有颜色的地方只用低饱和的莫兰迪色 */
+  --accent: #c47885;               /* 主操作：玫瑰 */
+  --sage: #84b598;                 /* 完成、匹配 */
+  --teal: #6eaab0;                 /* 进行中 */
+  --sand: #d2a473;                 /* 提醒 */
+  --clay: #c98a8f;                 /* 删除、失败 */
+
+  /* 字号 */
+  --fs-display: 52px;              /* 页面大标题 */
+  --fs-title: 24px;
+  --fs-lead: 17px;
+  --fs-body: 14px;
+  --fs-ui: 15px;                   /* 胶囊、按钮、列表标题 */
+  --fs-small: 13px;
+  --fs-tiny: 12px;
+
+  /* 圆角 */
+  --r-pill: 999px;
+  --r-panel: 28px;
+  --r-card: 20px;
+  --r-box: 18px;
+  --r-inner: 12px;
+
+  /* 页面边距和区块间距 */
+  --page-max: 1480px;
+  --page-x: 40px;
+  --gap-section: 28px;
+
+  /* WaifuX 的弹簧：response 0.34、阻尼 0.88，几乎不回弹 */
+  --spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-spring: 340ms;
+  --t-hover: 170ms;
+  --t-fade: 220ms;
+
+  transition: --glow 1200ms ease;
+}
+
+/* 深色 */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --ground: #0d0d0d;
+  --ink: #f3f0e7;
+  --ink-2: rgb(243 240 231 / 0.72);
+  --ink-3: rgb(243 240 231 / 0.52);
+  --glass: rgb(255 255 255 / 0.06);
+  --glass-hi: rgb(255 255 255 / 0.1);
+  --glass-press: rgb(255 255 255 / 0.14);
+  --line: rgb(255 255 255 / 0.1);
+  --line-hi: rgb(255 255 255 / 0.18);
+  --highlight: rgb(255 255 255 / 0.06);
+  --box: rgb(255 255 255 / 0.045);
+  --box-line: rgb(255 255 255 / 0.07);
+  --panel: rgb(255 255 255 / 0.035);
+  --track: rgb(255 255 255 / 0.08);
+  --float-shadow: 0 12px 36px rgb(0 0 0 / 0.45);
+  --mix-to: white;                 /* 有色文字向白色调亮 */
+  --cta-bg: color-mix(in srgb, var(--accent) 42%, transparent);
+  --cta-line: color-mix(in srgb, var(--accent) 60%, transparent);
+  --ring: #161617;                 /* 小圆点的描边，接近卡片底色 */
+  --atmo: linear-gradient(160deg, #121215 0%, #0a0a0c 55%, #060607 100%);
+  --cloud: 0.17;
+  --lift: 14%;                     /* 深色下把光提亮一点，暖色才不会发棕 */
+  --spot: rgb(255 255 255 / 0.06);
+  --top-tint: rgb(13 13 13 / 0.42);
+  --float: rgb(40 40 44 / 0.52);   /* 浮层：磨砂玻璃，靠强模糊让下层文字看不清 */
+  --grain: 0.045;
+  --grain-blend: overlay;
+}
+
+/* 浅色：中性浅灰底、近黑字 */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --ground: #f7f7f9;
+  --ink: #1d1d1f;
+  --ink-2: rgb(29 29 31 / 0.72);
+  --ink-3: rgb(29 29 31 / 0.56);
+  --glass: rgb(255 255 255 / 0.7);
+  --glass-hi: rgb(255 255 255 / 0.9);
+  --glass-press: #ffffff;
+  --line: rgb(0 0 0 / 0.08);
+  --line-hi: rgb(0 0 0 / 0.14);
+  --highlight: rgb(255 255 255 / 0.9);
+  --box: rgb(255 255 255 / 0.74);
+  --box-line: rgb(0 0 0 / 0.06);
+  --panel: rgb(255 255 255 / 0.4);
+  --track: rgb(0 0 0 / 0.07);
+  --float-shadow: 0 12px 36px rgb(20 20 40 / 0.14);
+  --mix-to: #1d1d1f;               /* 有色文字向近黑压暗，保证对比度 */
+  --cta-bg: var(--accent);
+  --cta-line: transparent;
+  --ring: #ffffff;
+  --atmo: linear-gradient(160deg, #fdfdfe 0%, #f6f6f9 55%, #f0f0f5 100%);
+  --cloud: 0.26;
+  --lift: 0%;
+  --spot: rgb(255 255 255 / 0.95);
+  --top-tint: rgb(247 247 249 / 0.5);
+  --float: rgb(255 255 255 / 0.6);
+  --grain: 0.02;
+  --grain-blend: multiply;
+}
+
+@media (max-width: 720px) {
+  :root { --page-x: 16px; --fs-display: 36px; }
+}

@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1040" viewBox="0 0 1200 1040" role="img" aria-labelledby="title desc">
+  <title id="title">迁跃系统架构：单进程、明确入口与本地数据边界</title>
+  <desc id="desc">Web 工作台和命令行工具通过 /api 进入 FastAPI，外部 Agent 可选择通过 /mcp 接入。后端包含 HTTP API、MCP Server、内置助手、共享工作区操作、运行执行器和九张 LangGraph 工作流。HTTP API 可直接创建运行，也可进入内置助手；内置助手与 MCP 均通过共享工作区操作调用运行执行器。工作流使用程序校验和 RAG 检索，并连接本机 SQLite、Checkpoint、Qdrant、检索模型，以及外部模型服务、联网搜索和专用 Chrome。</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#8b857c"/>
+    </marker>
+    <style>
+      .sans { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', 'Segoe UI', sans-serif; }
+      .mono { font-family: 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; }
+      .card { fill: #fcfbf8; stroke: #d8d2c9; stroke-width: 1; }
+      .inner { fill: #f7f4ef; stroke: #d8d2c9; stroke-width: 1; }
+      .title { fill: #24221f; font-size: 22px; font-weight: 650; }
+      .body { fill: #6e6962; font-size: 16px; }
+      .label { fill: #8a5b64; font-size: 14px; font-weight: 650; letter-spacing: 1.6px; }
+      .flow { fill: none; stroke: #8b857c; stroke-width: 1.5; }
+      .flow-label { fill: #7a746c; font-size: 14px; }
+      .workflow { fill: #24221f; font-size: 19px; font-weight: 600; }
+      .workflow-note { fill: #746e66; font-size: 15px; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1040" rx="28" fill="#f3f0ea"/>
+  <rect x="0.5" y="0.5" width="1199" height="1039" rx="27.5" fill="none" stroke="#d8d2c9"/>
+
+  <g class="sans">
+    <!-- 标题 -->
+    <text x="48" y="58" fill="#24221f" font-size="32" font-weight="700">迁跃系统架构</text>
+    <text x="48" y="88" fill="#6e6962" font-size="17">单一 FastAPI 进程 · 本地持久化 · 外部连接边界清晰</text>
+    <text class="mono" x="1152" y="58" text-anchor="end" fill="#8a5b64" font-size="14" letter-spacing="1.2">QIANYUE / ARCHITECTURE</text>
+    <text class="mono" x="1152" y="86" text-anchor="end" fill="#7a746c" font-size="14">127.0.0.1</text>
+
+    <!-- 层标题与容器 -->
+    <text class="label mono" x="48" y="112">01 / ENTRY POINTS</text>
+    <rect x="48" y="258" width="1104" height="542" rx="20" fill="#ebe7df" stroke="#cfc8bd"/>
+    <text class="label mono" x="72" y="288">02 / FASTAPI BACKEND</text>
+    <text class="mono" x="1128" y="288" text-anchor="end" fill="#6e6962" font-size="14">uvicorn · single process</text>
+
+    <!-- 连线置于节点下方，避免穿过文字 -->
+    <g class="flow" marker-end="url(#arrow)">
+      <path d="M224 200V246H280V306"/>
+      <path d="M600 200V306"/>
+      <path d="M976 200V306"/>
+      <path d="M230 374V404"/>
+      <path d="M450 374V506"/>
+      <path d="M960 374V404"/>
+      <path d="M380 440H438C438 428 462 428 462 440H520"/>
+      <path d="M820 476V506"/>
+      <path d="M600 558V584"/>
+      <path d="M400 772V848"/>
+      <path d="M960 772V848"/>
+    </g>
+    <g class="flow-label">
+      <text x="236" y="232">/api · SSE · WebSocket</text>
+      <text class="mono" x="612" y="232">/api</text>
+      <text x="988" y="232">/mcp · Streamable HTTP</text>
+      <text x="412" y="820">数据读写 · 断点 · 检索</text>
+      <text x="972" y="820">模型 · 搜索 · 页面</text>
+    </g>
+
+    <!-- 01：入口 -->
+    <g>
+      <rect class="card" x="48" y="122" width="352" height="78" rx="14"/>
+      <text class="title" x="72" y="154">Web 工作台</text>
+      <text class="body" x="72" y="181">React 19 · 功能页与内置助手</text>
+
+      <rect class="card" x="424" y="122" width="352" height="78" rx="14"/>
+      <text class="title" x="448" y="154">命令行工具</text>
+      <text class="body mono" x="448" y="181">collect.py · mock_interview.py</text>
+
+      <rect class="card" x="800" y="122" width="352" height="78" rx="14"/>
+      <text class="title" x="824" y="154">外部 Agent（可选）</text>
+      <text class="body" x="824" y="181">支持 Streamable HTTP 的 Agent</text>
+    </g>
+
+    <!-- 02a：协议入口 -->
+    <g>
+      <rect class="card" x="80" y="306" width="680" height="68" rx="13"/>
+      <text class="title" x="104" y="336">HTTP API <tspan class="mono" font-size="17">/api</tspan></text>
+      <text class="body" x="104" y="361">业务接口 · 助手对话 · SSE · WebSocket</text>
+
+      <rect class="card" x="800" y="306" width="320" height="68" rx="13"/>
+      <text class="title" x="824" y="336">MCP Server <tspan class="mono" font-size="17">/mcp</tspan></text>
+      <text class="body" x="824" y="361">30 个 Tool · 4 类 Resource</text>
+    </g>
+
+    <!-- 02b：应用层。API 到 RunManager 的连线走中间空隙，不与助手连线交叉 -->
+    <g>
+      <rect class="card" x="80" y="404" width="300" height="72" rx="13"/>
+      <text class="title" x="104" y="434">内置助手</text>
+      <text class="body" x="104" y="460">ReAct Agent · 13 个工具</text>
+
+      <rect class="card" x="520" y="404" width="600" height="72" rx="13"/>
+      <text class="title" x="544" y="434">共享工作区操作</text>
+      <text class="body" x="544" y="460">助手与 MCP 共用读取、写入和任务规则</text>
+
+      <rect x="80" y="506" width="1040" height="52" rx="12" fill="#e2dbe0" stroke="#c9afb5"/>
+      <text x="104" y="539" fill="#342b2d" font-size="21" font-weight="650">运行执行器 RunManager</text>
+      <text x="454" y="538" fill="#6e5c60" font-size="16">任务去重 · 节点断点 · 人工中断 · 断点恢复</text>
+    </g>
+
+    <!-- 02c：九张业务图 -->
+    <text class="label mono" x="104" y="610">LANGGRAPH / 9 WORKFLOWS</text>
+    <text x="1096" y="610" text-anchor="end" fill="#746e66" font-size="14"><tspan fill="#6f8972">●</tspan> 固定流程 <tspan fill="#b66d7b" dx="10">●</tspan> ReAct Agent</text>
+
+    <g>
+      <rect class="inner" x="104" y="626" width="236" height="50" rx="11"/>
+      <circle cx="124" cy="651" r="4" fill="#6f8972"/>
+      <text class="workflow" x="138" y="658">岗位评估</text>
+      <text class="workflow-note" x="324" y="657" text-anchor="end">八维评分</text>
+
+      <rect class="inner" x="356" y="626" width="236" height="50" rx="11"/>
+      <circle cx="376" cy="651" r="4" fill="#6f8972"/>
+      <text class="workflow" x="390" y="658">能力画像</text>
+      <text class="workflow-note" x="576" y="657" text-anchor="end">2–15 个岗位</text>
+
+      <rect class="inner" x="608" y="626" width="236" height="50" rx="11"/>
+      <circle cx="628" cy="651" r="4" fill="#6f8972"/>
+      <text class="workflow" x="642" y="658">定制简历</text>
+      <text class="workflow-note" x="828" y="657" text-anchor="end">逐条确认</text>
+
+      <rect class="inner" x="860" y="626" width="236" height="50" rx="11"/>
+      <circle cx="880" cy="651" r="4" fill="#b66d7b"/>
+      <text class="workflow" x="894" y="658">公司研究</text>
+      <text class="workflow-note" x="1080" y="657" text-anchor="end">联网检索</text>
+
+      <rect class="inner" x="104" y="686" width="236" height="50" rx="11"/>
+      <circle cx="124" cy="711" r="4" fill="#b66d7b"/>
+      <text class="workflow" x="138" y="718">沟通建议</text>
+      <text class="workflow-note" x="324" y="717" text-anchor="end">检索与草稿</text>
+
+      <rect class="inner" x="356" y="686" width="236" height="50" rx="11"/>
+      <circle cx="376" cy="711" r="4" fill="#6f8972"/>
+      <text class="workflow" x="390" y="718">面试准备</text>
+      <text class="workflow-note" x="576" y="717" text-anchor="end">证据与面经</text>
+
+      <rect class="inner" x="608" y="686" width="236" height="50" rx="11"/>
+      <circle cx="628" cy="711" r="4" fill="#6f8972"/>
+      <text class="workflow" x="642" y="718">模拟面试</text>
+      <text class="workflow-note" x="828" y="717" text-anchor="end">问答与复盘</text>
+
+      <rect class="inner" x="860" y="686" width="236" height="50" rx="11"/>
+      <circle cx="880" cy="711" r="4" fill="#6f8972"/>
+      <text class="workflow" x="894" y="718">岗位采集</text>
+      <text class="workflow-note" x="1080" y="717" text-anchor="end">CDP · Chrome</text>
+    </g>
+
+    <line x1="104" y1="748" x2="1096" y2="748" stroke="#d8d2c9"/>
+    <text x="104" y="775" fill="#8a5b64" font-size="16" font-weight="650">程序校验</text>
+    <text x="188" y="775" fill="#6e6962" font-size="16">评分计算 · 来源与引用核验 · 失败重试</text>
+    <text x="792" y="775" fill="#8a5b64" font-size="16" font-weight="650">RAG</text>
+    <text x="838" y="775" fill="#6e6962" font-size="16">materials 与 workspace 独立集合</text>
+
+    <!-- 03：本地数据 -->
+    <rect class="card" x="48" y="848" width="696" height="160" rx="18"/>
+    <text class="label mono" x="72" y="878">03 / LOCAL DATA</text>
+    <text class="body" x="720" y="878" text-anchor="end">data/ · 本地持久化</text>
+
+    <g>
+      <rect class="inner" x="72" y="896" width="150" height="88" rx="11"/>
+      <text class="mono" x="88" y="928" fill="#24221f" font-size="16">qianyue.db</text>
+      <text class="body" x="88" y="954">业务数据 · SQLite</text>
+      <text class="body" x="88" y="975">9 张表</text>
+
+      <rect class="inner" x="234" y="896" width="150" height="88" rx="11"/>
+      <text class="mono" x="250" y="928" fill="#24221f" font-size="15">checkpoints.db</text>
+      <text class="body" x="250" y="954">断点 · 对话</text>
+      <text class="body" x="250" y="975">LangGraph</text>
+
+      <rect class="inner" x="396" y="896" width="150" height="88" rx="11"/>
+      <text class="mono" x="412" y="928" fill="#24221f" font-size="16">vectors/</text>
+      <text class="body" x="412" y="954">Qdrant 本地模式</text>
+      <text class="body" x="412" y="975">两个向量集合</text>
+
+      <rect class="inner" x="558" y="896" width="150" height="88" rx="11"/>
+      <text class="mono" x="574" y="928" fill="#24221f" font-size="16">models/</text>
+      <text class="body" x="574" y="954">Embedding</text>
+      <text class="body" x="574" y="975">Rerank · 本机运行</text>
+    </g>
+
+    <!-- 04：外部服务 -->
+    <rect class="card" x="768" y="848" width="384" height="160" rx="18"/>
+    <text class="label mono" x="792" y="878">04 / EXTERNAL</text>
+    <text class="body" x="1128" y="878" text-anchor="end">显式外部连接</text>
+
+    <g>
+      <rect class="inner" x="792" y="896" width="336" height="26" rx="8"/>
+      <text x="808" y="915" fill="#24221f" font-size="16">模型服务 <tspan class="body" dx="8">OpenAI 兼容 API</tspan></text>
+      <rect class="inner" x="792" y="928" width="336" height="26" rx="8"/>
+      <text x="808" y="947" fill="#24221f" font-size="16">联网搜索 <tspan class="body" dx="8">搜索服务与网页</tspan></text>
+      <rect class="inner" x="792" y="960" width="336" height="26" rx="8"/>
+      <text x="808" y="979" fill="#24221f" font-size="16">专用 Chrome <tspan class="body" dx="8">平台采集 · CDP</tspan></text>
+    </g>
+  </g>
+</svg>

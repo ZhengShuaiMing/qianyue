@@ -1,0 +1,54 @@
+/* 云：三团很大的光，合起来铺满页面。
+   漂移：三团沿同一条绕满整个画面的路线走（左上 → 右上 → 右下 → 左下），一圈 110 秒，彼此错开三分之一圈，
+         所以总在互相追、互相挤，没有哪块地方一直空着。
+   呼吸：各自约 11–13 秒一次的缩放和明暗。
+   颜色：各自在六种莫兰迪色之间缓慢渐变，一轮 48 秒，三团错开，任何时候颜色都不一样；
+         大范围的模糊让相邻两团在交界处柔和过渡。选中岗位的颜色（--glow）以 18% 混进三团里 */
+@property --cyc {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: #86a8cf;
+}
+
+.atmo { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: var(--atmo); }
+
+.cloud { position: absolute; left: 50%; top: 50%; width: 80vw; height: 80vh; min-width: 860px; min-height: 680px; will-change: transform;
+  animation: roam 110s ease-in-out infinite; animation-delay: var(--delay); }
+.cloud > i { position: absolute; inset: 0; border-radius: 50%; filter: blur(150px); opacity: var(--cloud);
+  background: color-mix(in oklab, color-mix(in oklab, var(--cyc), var(--glow) 18%), white var(--lift));
+  animation: breathe var(--b) ease-in-out infinite, hue 48s linear infinite;
+  animation-delay: 0s, var(--hue-delay); }
+.cloud-1 { --delay: 0s; }
+.cloud-1 > i { --b: 11s; --hue-delay: 0s; }
+.cloud-2 { --delay: -36.7s; }
+.cloud-2 > i { --b: 13s; --hue-delay: -16s; }
+.cloud-3 { --delay: -73.3s; }
+.cloud-3 > i { --b: 12s; --hue-delay: -32s; }
+
+/* 绕满全图的路线：中心点从左上走到右上、右下、左下，再回来；途中有大有小 */
+@keyframes roam {
+  0%, 100% { transform: translate(-50%, -50%) translate(-34vw, -30vh) scale(1); }
+  25% { transform: translate(-50%, -50%) translate(32vw, -26vh) scale(1.15); }
+  50% { transform: translate(-50%, -50%) translate(30vw, 32vh) scale(0.9); }
+  75% { transform: translate(-50%, -50%) translate(-30vw, 28vh) scale(1.1); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: var(--cloud); }
+  50% { transform: scale(1.08); opacity: calc(var(--cloud) * 0.75); }
+}
+/* 六种颜色：灰蓝、灰紫、灰玫瑰、沙色、鼠尾草绿、灰青 */
+@keyframes hue {
+  0%, 100% { --cyc: #86a8cf; }
+  16.6% { --cyc: #a49ed6; }
+  33.3% { --cyc: #d39aa6; }
+  50% { --cyc: #d2a473; }
+  66.6% { --cyc: #84b598; }
+  83.3% { --cyc: #7fb3b5; }
+}
+
+/* 顶部一束很淡的聚光 */
+.atmo-spot { position: absolute; left: 50%; top: -340px; width: 1200px; height: 680px; transform: translateX(-50%);
+  background: radial-gradient(closest-side, var(--spot), transparent); }
+
+.atmo-grain { position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: var(--grain); mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }

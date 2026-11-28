@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="22" viewBox="0 0 120 22" role="img" aria-labelledby="title">
+  <title id="title">业务数据 · 本机存储</title>
+  <path fill="#414044" d="M0 0h60v22H0z"/>
+  <path fill="#75505b" d="M60 0h60v22H60z"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="11">
+    <text x="30" y="15">业务数据</text>
+    <text x="90" y="15">本机存储</text>
+  </g>
+</svg>

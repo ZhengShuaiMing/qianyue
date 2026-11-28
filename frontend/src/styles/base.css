@@ -1,0 +1,43 @@
+/* 基础规则：重置、元素默认样式、共用的入场动画、减少动态效果 */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 400ms ease, color 400ms ease;
+}
+
+img, svg { display: block; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+button:disabled { cursor: default; }
+a { color: inherit; text-decoration: none; }
+/* 段落最后一行不只剩一两个字 */
+p, li, blockquote { text-wrap: pretty; }
+input, textarea { background: none; border: 0; outline: 0; width: 100%; color: var(--ink); }
+input::placeholder, textarea::placeholder { color: var(--ink-3); }
+:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent) 70%, var(--mix-to)); outline-offset: 2px; }
+
+/* 入场：上浮淡入。只用 backwards 填充，播完就松开，不然 Chrome 里子元素的背景模糊会失效 */
+@keyframes rise { from { opacity: 0; transform: translateY(14px) scale(0.99); } }
+/* 切换页签、换页时只淡入，不位移，免得内容上下跳 */
+@keyframes fade { from { opacity: 0; } }
+/* 切换对象时只让文字淡入，面板和控件不动 */
+.text-in { min-width: 0; animation: rise 320ms var(--spring) backwards; }
+@keyframes pulse { 50% { opacity: 0.45; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+/* 进行中的小转圈，跟着文字颜色 */
+.spinner { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, currentColor 30%, transparent); border-top-color: currentColor;
+  animation: spin 800ms linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* 一行放不下就用「…」省略，悬停（title）看全文。用在名称旁边的短说明上：换行会把旁边的输入框、方框挤下去 */
+.clip { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }

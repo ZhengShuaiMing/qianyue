@@ -1,0 +1,10 @@
+/* 轻提示：顶栏下面居中的磨砂玻璃胶囊，新的在下面。底部留给确认条、输入框这些要操作的东西 */
+.toasts { position: fixed; left: 50%; top: 84px; z-index: 40; transform: translateX(-50%); display: grid; justify-items: center; gap: 10px;
+  width: max-content; max-width: calc(100vw - 2 * var(--page-x)); pointer-events: none; }
+.toast { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 20px; border-radius: var(--r-pill);
+  color: var(--ink); font-size: var(--fs-body); font-weight: 500; line-height: 1.5; text-align: left; pointer-events: auto;
+  animation: drop var(--t-spring) var(--spring) backwards; }
+@keyframes drop { from { opacity: 0; transform: translateY(-10px) scale(0.98); } }
+.toast i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--sage); }
+.toast[data-tone='error'] i { background: var(--clay); }
+@media (max-width: 720px) { .toasts { top: 128px; } }

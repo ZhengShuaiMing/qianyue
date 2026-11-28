@@ -1,0 +1,86 @@
+/* 按页导览：整屏压暗，被介绍的控件挖空、描一圈强调色微光；说明卡是一块毛玻璃，带一个指向控件的小三角 */
+.guide { position: fixed; inset: 0; z-index: 200; --guide-dim: rgb(0 0 0 / 0.55); }
+:root[data-theme='light'] .guide { --guide-dim: rgb(20 20 30 / 0.38); }
+.guide-mask { position: absolute; inset: 0; cursor: pointer; }
+.guide-dim { position: absolute; inset: 0; background: var(--guide-dim); pointer-events: none; animation: guide-fade var(--t-fade) ease backwards; }
+/* 挖空靠一圈很大的阴影压暗四周；换一步时用弹簧曲线滑过去 */
+.guide-hole { position: absolute; border-radius: 12px; pointer-events: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 95%, transparent), 0 0 18px 2px color-mix(in srgb, var(--accent) 50%, transparent),
+    0 0 0 9999px var(--guide-dim);
+  transition: top 480ms var(--spring), left 480ms var(--spring), width 480ms var(--spring), height 480ms var(--spring);
+  animation: guide-fade var(--t-fade) ease backwards; }
+
+.guide-card { position: absolute; width: min(340px, calc(100vw - 32px)); border-radius: 16px; color: var(--ink);
+  border: 1px solid rgb(255 255 255 / 0.14); box-shadow: 0 10px 48px rgb(0 0 0 / 0.45);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6); backdrop-filter: blur(28px) saturate(1.6);
+  transition: top 480ms var(--spring), left 480ms var(--spring); }
+/* 还在等下一步的控件（滚动、切页面）时，旧的一步留着但点不了 */
+.guide[data-pending='true'] .guide-btn { pointer-events: none; }
+:root[data-theme='dark'] .guide-card { background: rgb(40 40 46 / 0.72); }
+:root[data-theme='light'] .guide-card { background: rgb(255 255 255 / 0.8); border-color: rgb(255 255 255 / 0.7); box-shadow: 0 10px 40px rgb(20 20 40 / 0.22); }
+.guide[data-centered='true'] .guide-card { top: 50%; left: 50%; translate: -50% -50%; }
+/* 指向控件的小三角：和卡片同一块玻璃，一个转了 45° 的方块露出一半 */
+.guide-arrow { position: absolute; width: 14px; height: 14px; margin-left: -7px; rotate: 45deg; background: inherit; border: inherit;
+  -webkit-backdrop-filter: inherit; backdrop-filter: inherit; transition: left 480ms var(--spring), top 480ms var(--spring); }
+.guide-arrow[data-side='top'] { top: -8px; border-right: 0; border-bottom: 0; }
+.guide-arrow[data-side='bottom'] { bottom: -8px; border-left: 0; border-top: 0; }
+.guide-arrow[data-side='left'], .guide-arrow[data-side='right'] { margin: -7px 0 0; }
+.guide-arrow[data-side='left'] { left: -8px; border-top: 0; border-right: 0; }
+.guide-arrow[data-side='right'] { right: -8px; border-bottom: 0; border-left: 0; }
+:root[data-theme='dark'] .guide-arrow { background: rgb(40 40 46 / 0.92); }
+:root[data-theme='light'] .guide-arrow { background: rgb(255 255 255 / 0.95); }
+
+/* 每一步的内容淡入，从 0.96 倍放大到原尺寸 */
+.guide-card-body { position: relative; display: grid; gap: 12px; padding: 16px 18px; animation: guide-in 300ms var(--spring) backwards; }
+.guide-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: -4px; }
+.guide-head small { color: var(--ink-3); font-size: var(--fs-tiny); }
+.guide-card-body h2 { margin: 0; font: 700 16px/1.4 var(--serif); }
+.guide-skip { flex: none; padding: 3px 9px; border-radius: var(--r-pill); background: var(--glass); color: var(--ink-3); font-size: var(--fs-tiny); font-weight: 500;
+  cursor: pointer; transition: background var(--t-hover), color var(--t-hover); }
+.guide-skip:hover { background: var(--glass-hi); color: var(--ink); }
+.guide-text { margin: 0; color: var(--ink-2); font-size: var(--fs-small); line-height: 1.75; }
+/* 进度：当前这一步是一段长条，其余是圆点；右边写第几步 */
+.guide-progress { display: flex; align-items: center; gap: 5px; }
+.guide-progress i { width: 6px; height: 6px; border-radius: var(--r-pill); background: var(--line-hi); transition: width 200ms ease, background 200ms ease; }
+.guide-progress i[data-on='true'] { width: 16px; background: var(--accent); }
+.guide-progress span { margin-left: auto; color: var(--ink-3); font-size: var(--fs-tiny); font-variant-numeric: tabular-nums; }
+.guide-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.guide-btn { padding: 7px 16px; border-radius: var(--r-pill); background: var(--glass); color: var(--ink); font-size: var(--fs-small); font-weight: 600;
+  cursor: pointer; transition: background var(--t-hover), filter var(--t-hover); }
+.guide-btn:hover { background: var(--glass-hi); }
+.guide-btn:active { filter: brightness(0.92); }
+.guide-btn[data-primary] { background: color-mix(in srgb, var(--accent) 88%, transparent); color: white; }
+.guide-btn[data-primary]:hover { background: var(--accent); }
+/* 换一步时焦点自动落在主按钮上：用一圈淡的光代替默认的粗描边 */
+.guide-btn:focus-visible, .guide-intro-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
+
+@keyframes guide-fade { from { opacity: 0; } }
+@keyframes guide-in { from { opacity: 0; scale: 0.96; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .guide-hole, .guide-card, .guide-arrow { transition: none; }
+}
+
+/* 引导入口：居中一张卡，大标题两行，下面一句说明和三个选择 */
+.guide-intro { width: min(460px, calc(100vw - 32px)); padding: 40px 36px 32px; border: 0; border-radius: 24px; text-align: center; color: var(--ink);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.35); }
+.guide-intro[open] { animation: guide-in 340ms var(--spring) backwards; }
+:root[data-theme='light'] .guide-intro { background: rgb(255 255 255 / 0.96); }
+:root[data-theme='dark'] .guide-intro { background: rgb(36 36 40 / 0.94); border: 1px solid rgb(255 255 255 / 0.1); }
+.guide-intro::backdrop { background: rgb(0 0 0 / 0.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+:root[data-theme='light'] .guide-intro::backdrop { background: rgb(20 20 30 / 0.3); }
+.guide-intro h2 { margin: 0; font: 700 30px/1.35 var(--serif); }
+.guide-intro p { margin: 16px auto 0; max-width: 340px; color: var(--ink-2); font-size: var(--fs-ui); line-height: 1.75; }
+.guide-intro-close { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+  color: var(--ink-3); cursor: pointer; transition: background var(--t-hover), color var(--t-hover); }
+.guide-intro-close:hover { background: var(--glass-hi); color: var(--ink); }
+.guide-intro-close svg { width: 18px; height: 18px; }
+.guide-intro-actions { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 28px; }
+.guide-intro-btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: 14px; background: var(--glass); border: 1px solid var(--line);
+  color: var(--ink); font-size: var(--fs-ui); font-weight: 600; cursor: pointer; transition: background var(--t-hover), filter var(--t-hover); }
+.guide-intro-btn:hover { background: var(--glass-hi); }
+.guide-intro-btn:active { filter: brightness(0.92); }
+.guide-intro-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.guide-intro-btn svg { width: 16px; height: 16px; }
+.guide-intro-btn[data-primary] { background: var(--ink); border-color: var(--ink); color: var(--ground); }
+.guide-intro-btn[data-primary]:hover { filter: brightness(1.15); background: var(--ink); }

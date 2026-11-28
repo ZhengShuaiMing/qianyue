@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant C as 工作台
+    participant API as POST /api/runs
+    participant RM as RunManager
+    participant G as LangGraph 图
+    participant CP as checkpoints.db
+    participant DB as qianyue.db
+
+    C->>API: kind、job_ids、conditions
+    API->>RM: submit()
+    RM->>DB: 存在相同任务（进行中或等待用户）时直接返回原运行
+    RM->>DB: 创建 runs 记录（running）
+    RM-->>C: 立即返回运行编号
+    RM->>G: 后台执行 astream(stream_mode=custom+updates)
+    loop 各节点执行期间
+        G->>CP: 节点完成后保存 State Checkpoint
+        G-->>RM: custom 事件（节点进入、工具调用、逐字输出）
+        RM-->>C: SSE /api/runs/{id}/events
+    end
+    alt 节点调用 interrupt()
+        RM->>DB: status = waiting_user
+        C->>API: /respond（用户答复）
+        API->>RM: Command(resume=答复)，从中断节点继续
+    else 执行至 END
+        RM->>DB: succeeded / failed（记录原因）
+    end

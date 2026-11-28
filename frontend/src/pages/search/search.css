@@ -1,0 +1,42 @@
+/* 检索页：搜索框和类别在上，结果一列；每条前面一个类别小标签，字面相同处加亮 */
+.search-split { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+.search-main { min-width: 0; }
+/* 检索历史跟着页面滚动时停在顶部，条目多了在框里滚 */
+.search-side { position: sticky; top: 88px; }
+.search-side .box { max-height: calc(100vh - 200px); overflow-y: auto; scrollbar-width: thin; }
+/* 与 Group 标题的左边距对齐 */
+.search-side-empty { margin: 0 0 0 4px; color: var(--ink-3); font-size: var(--fs-small); line-height: 1.7; }
+.search-record { display: flex; align-items: center; gap: 4px; padding-right: 8px; transition: background var(--t-hover); }
+.search-record:hover, .search-record[aria-current='true'] { background: var(--glass); }
+.search-record > button:first-child { flex: 1; min-width: 0; display: grid; gap: 2px; padding: 12px 8px 12px 20px; text-align: left; }
+.search-record strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-body); font-weight: 600; }
+.search-record small { color: var(--ink-3); font-size: var(--fs-tiny); font-variant-numeric: tabular-nums; }
+.search-record-remove { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--ink-3); opacity: 0; transition: opacity var(--t-hover), background var(--t-hover); }
+.search-record:hover .search-record-remove, .search-record-remove:focus-visible { opacity: 1; }
+.search-record-remove:hover { background: var(--glass-hi); color: var(--ink); }
+@media (max-width: 1100px) { .search-split { grid-template-columns: minmax(0, 1fr); } .search-side { position: static; } .search-record-remove { opacity: 1; } }
+.search-row { display: flex; gap: 12px; }
+.search-row-field { flex: 1; min-width: 0; }
+.search-filter { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 20px 0 24px; }
+.search-examples { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--ink-3); font-size: var(--fs-small); }
+.search-examples button { height: 32px; padding: 0 14px; border-radius: var(--r-pill); background: var(--box); border: 1px solid var(--line); color: var(--ink-2);
+  font-size: var(--fs-small); transition: background var(--t-hover), color var(--t-hover); }
+.search-examples button:hover { background: var(--glass-hi); color: var(--ink); }
+.search-note { display: flex; align-items: center; gap: 10px; margin: 0; color: var(--ink-3); }
+.search-hits { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; transition: opacity var(--t-fade); }
+.search-hits[data-stale='true'] { opacity: 0.6; }
+.search-hits li { animation: fade 240ms ease backwards; }
+.search-hit { display: block; padding: 16px 20px; color: inherit; text-decoration: none; transition: border-color var(--t-hover), background var(--t-hover); }
+.search-hit:hover { border-color: var(--line-hi); background: var(--glass-hi); }
+.search-hit > * + * { border-top: 0; }
+.search-hit-head { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.search-hit-head strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--fs-ui); font-weight: 600; }
+.search-hit-head time { flex: none; color: var(--ink-3); font-size: var(--fs-tiny); font-variant-numeric: tabular-nums; }
+.search-tag { flex: none; padding: 1px 8px; border-radius: 6px; font-size: var(--fs-tiny); font-weight: 600; color: var(--ink-2);
+  background: color-mix(in srgb, var(--c) 18%, transparent); }
+.search-near { flex: none; color: var(--ink-3); font-size: var(--fs-tiny); }
+.search-hit-heading { margin: 8px 0 0; color: var(--ink-3); font-size: var(--fs-small); }
+.search-hit-text { margin: 6px 0 0; color: var(--ink-2); line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.search-hit-text mark { padding: 0 1px; border-radius: 3px; background: color-mix(in srgb, var(--sand) 38%, transparent); color: var(--ink); }
+@media (max-width: 720px) { .search-row { flex-direction: column; } }

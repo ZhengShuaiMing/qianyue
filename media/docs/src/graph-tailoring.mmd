@@ -1,0 +1,13 @@
+flowchart LR
+    S0((START)) --> load_materials["load_materials<br/>读取材料"]
+    load_materials --> precheck["precheck<br/>前置检查"]
+    precheck --> E0((END))
+    precheck --> retrieve["retrieve<br/>检索证据"]
+    retrieve --> propose["propose<br/>生成修改方案"]
+    propose --> validate["validate<br/>校验方案"]
+    validate -->|不合格，最多重试 2 次| propose
+    validate -->|重试后仍不合格，或无需修改| E0
+    validate --> wording["wording<br/>核对措辞"]
+    wording --> review["review<br/>等待用户确认（interrupt）"]
+    review --> save["save<br/>保存简历"]
+    save --> E0

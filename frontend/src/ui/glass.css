@@ -1,0 +1,19 @@
+/* 玻璃：半透明 + 模糊 + 发丝边 + 顶部高光。胶囊、圆形按钮、卡片等共用。
+   放在半透明面板里的玻璃不需要模糊（后面只有已经模糊过的光），由面板自己关掉，避免内容淡入时模糊一闪 */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--highlight);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
+}
+
+/* 浮在内容上的东西（确认条、轻提示、菜单）：磨砂玻璃，强模糊让下层的字糊掉。
+   祖先元素不能再带背景模糊，入场动画只能用 backwards 填充，否则 Chrome 里模糊会失效 */
+.float {
+  background: var(--float);
+  border: 1px solid var(--line-hi);
+  box-shadow: inset 0 1px 0 var(--highlight), var(--float-shadow);
+  -webkit-backdrop-filter: blur(36px) saturate(1.6);
+  backdrop-filter: blur(36px) saturate(1.6);
+}

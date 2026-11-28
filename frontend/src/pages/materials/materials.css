@@ -1,0 +1,36 @@
+.materials-sample { margin: 0; padding: 16px 20px; white-space: pre-wrap; overflow-wrap: anywhere; font: 13.5px/1.75 ui-monospace, 'SF Mono', Menlo, var(--sans); color: var(--ink-2); }
+.materials-dirty { display: inline-block; width: 6px; height: 6px; margin-left: 6px; border-radius: 50%; background: var(--sand); vertical-align: middle; }
+.materials-split { display: grid; grid-template-columns: minmax(0, 760px) minmax(0, 1fr); gap: 40px; align-items: start; margin-top: var(--gap-section); }
+/* 两栏共用两行：上面一行是说明，下面一行是材料（或输入框）和参考写法，两个框的上沿对齐。
+   参考写法不撑高这一行，最多和左边一样高，内容多了在框里滚 */
+@media (min-width: 1101px) {
+  .materials-split { grid-template-rows: auto auto; row-gap: 0; }
+  .materials-split > * { display: grid; grid-row: span 2; grid-template-rows: subgrid; }
+  .materials-split > * > :first-child { align-self: start; }
+  .materials-sample-wrap { position: relative; }
+  .materials-sample-wrap > .materials-sample { position: absolute; inset: 0 0 auto; max-height: 100%; overflow-y: auto; scrollbar-width: thin; }
+}
+.materials-doc-head { display: flex; align-items: center; gap: 16px; min-height: 32px; margin-bottom: 8px; }
+.materials-doc-head p { flex: 1; margin: 0; color: var(--ink-2); }
+.materials-loading { margin: 0; color: var(--ink-3); }
+/* 三份材料的「还没有」框一样高，按钮都在底部同一个位置，切换分页时不跳 */
+.materials-doc .empty { min-height: 260px; display: flex; flex-direction: column; }
+.materials-doc .empty-action { margin-top: auto; padding-top: 20px; }
+/* 说明文字最多两行，三份材料占同样的高度 */
+.materials-doc-head p { min-height: calc(2 * 1.7em); line-height: 1.7; display: flex; align-items: center; }
+.materials-start { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.materials-edit { padding: 12px; border-radius: var(--r-box); background: var(--box); border: 1px solid var(--box-line); }
+.materials-edit .input-area { min-height: 480px; background: transparent; font-family: ui-monospace, 'SF Mono', Menlo, var(--sans); font-size: 13.5px; }
+.materials-edit-bar { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.materials-edit-bar span { flex: 1; color: var(--ink-3); font-size: var(--fs-small); }
+.materials-edit-bar span[data-tone='error'] { color: color-mix(in srgb, var(--clay) 70%, var(--mix-to)); }
+.materials-version { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; text-align: left;
+  font-size: var(--fs-body); font-variant-numeric: tabular-nums; transition: background var(--t-hover); }
+.materials-version:hover { background: var(--glass); }
+.materials-version:first-child { border-radius: var(--r-box) var(--r-box) 0 0; }
+.materials-version:last-child { border-radius: 0 0 var(--r-box) var(--r-box); }
+.materials-version small { color: var(--ink-3); font-size: var(--fs-tiny); }
+.materials-version-body { padding: 0; }
+@media (max-width: 1100px) {
+  .materials-split { grid-template-columns: minmax(0, 1fr); }
+}

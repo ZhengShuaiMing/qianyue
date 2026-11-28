@@ -1,0 +1,19 @@
+/* 品牌图。颜色：默认跟随文字色；tile 版本是墨黑底暖白笔画 */
+.brand-mark { display: block; flex: none; --brand-ink: currentColor; }
+.brand-mark--tile { --brand-ink: #f3f0e7; }
+.brand-mark__tile { fill: #1b1b1a; }
+.brand-mark__fill { fill: var(--brand-ink); }
+.brand-mark__stroke { fill: none; stroke: var(--brand-ink); stroke-width: 1.6px; stroke-linejoin: round; stroke-dasharray: 1; opacity: 0; }
+
+/* 动画：下段描边 → 上段描边 → 两段一起填充。120ms、500ms 开始描边，各 460ms；1140ms 开始填充，640ms */
+.brand-mark--animated .brand-mark__stroke { opacity: 1; animation: brand-draw 460ms cubic-bezier(0.45, 0, 0.55, 1) both; }
+.brand-mark--animated .brand-mark__stroke--lower { animation-delay: 120ms; }
+.brand-mark--animated .brand-mark__stroke--upper { animation-delay: 500ms; }
+.brand-mark--animated .brand-mark__fill { animation: brand-fill 640ms ease-out 1140ms both; }
+
+@keyframes brand-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes brand-fill { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark--animated .brand-mark__stroke, .brand-mark--animated .brand-mark__fill { animation: none; }
+}

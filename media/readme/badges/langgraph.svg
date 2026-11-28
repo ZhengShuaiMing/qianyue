@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="22" viewBox="0 0 100 22" role="img" aria-labelledby="title">
+  <title id="title">LangGraph · 1.x</title>
+  <path fill="#414044" d="M0 0h72v22H0z"/>
+  <path fill="#386752" d="M72 0h28v22H72z"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="11">
+    <text x="36" y="15">LangGraph</text>
+    <text x="86" y="15">1.x</text>
+  </g>
+</svg>

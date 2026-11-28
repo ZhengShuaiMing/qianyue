@@ -1,0 +1,12 @@
+flowchart LR
+    S0((START)) --> load_materials["load_materials<br/>读取材料"]
+    load_materials --> precheck["precheck<br/>前置检查"]
+    precheck -->|缺少材料或复用已有报告| E0((END))
+    precheck --> call_model["call_model<br/>调用模型"]
+    call_model --> validate["validate<br/>校验输出"]
+    validate -->|不合格，最多重试 2 次| call_model
+    validate -->|总分接近结论分数线| recheck["recheck<br/>复评"]
+    validate --> save["save<br/>保存报告"]
+    validate -->|重试后仍不合格| E0
+    recheck --> save
+    save --> E0

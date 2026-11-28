@@ -1,0 +1,4 @@
+.progress { display: flex; align-items: center; gap: 10px; }
+.progress span { flex: 1; height: 6px; border-radius: var(--r-pill); background: color-mix(in srgb, var(--teal) 16%, transparent); overflow: hidden; }
+.progress i { display: block; height: 100%; border-radius: var(--r-pill); background: var(--teal); transition: width var(--t-spring) var(--spring); }
+.progress em { flex: none; font-style: normal; font-size: var(--fs-tiny); color: var(--ink-2); font-variant-numeric: tabular-nums; }

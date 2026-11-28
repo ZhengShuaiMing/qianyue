@@ -1,0 +1,11 @@
+flowchart TB
+    U["用户输入（可包含截图）"] --> M
+    subgraph agent["create_agent（线程 chat-对话编号，Checkpoint 持久化）"]
+        M["model"] -->|tool_calls| T["tools"]
+        T -->|ToolMessage| M
+    end
+    MW1["Timestamps<br/>为每条消息记录时间"] -.-> M
+    MW2["ChatSummarizer<br/>达到预算 60% 时压缩早期对话"] -.-> M
+    MW3["HumanInTheLoopMiddleware<br/>change_stage 执行前等待用户确认"] -.-> T
+    T -->|hand_off| RM["RunManager 发起专员运行<br/>等待完成后原样推送结论"]
+    T -->|save_star / save_material| I["interrupt()：提交全文供用户确认"]

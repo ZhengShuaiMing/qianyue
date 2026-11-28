@@ -1,0 +1,35 @@
+/* 能滚动的区域：上面还有内容时顶边淡出，下面还有内容时底边淡出；滚到头的那一边不淡，不能滚动时两边都不淡。
+   用滚动驱动的动画按滚动位置改两边淡出的高度，不用脚本。不支持的浏览器（目前的 Firefox）就是不淡出。 */
+@property --fade-top { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --fade-bottom { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
+@keyframes scroll-fade {
+  0% { --fade-top: 0px; --fade-bottom: var(--fade); }
+  8% { --fade-top: var(--fade); }
+  92% { --fade-bottom: var(--fade); }
+  100% { --fade-top: var(--fade); --fade-bottom: 0px; }
+}
+
+@supports (animation-timeline: scroll()) {
+  .dialog-body,
+  .tasks-body,
+  .search-side .box,
+  .artifacts-list-wrap,
+  .jobs-list-wrap,
+  .board-cards,
+  .collect-lines,
+  .assistant-list,
+  .chat-scroll,
+  .chat-result .prose,
+  .chat-confirm-one,
+  .events,
+  .comm-log,
+  .run-tools,
+  .materials-sample-wrap > .materials-sample {
+    --fade: 28px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
+    animation: scroll-fade linear both;
+    animation-timeline: scroll(self);
+  }
+}

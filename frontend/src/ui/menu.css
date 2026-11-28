@@ -1,0 +1,8 @@
+/* 位置由 Menu.tsx 在打开前算好（top、right） */
+.menu { position: fixed; inset: auto; margin: 0; min-width: 180px; padding: 6px; border-radius: var(--r-box); color: var(--ink); }
+.menu:popover-open { display: grid; animation: rise var(--t-spring) var(--spring) backwards; }
+.menu button { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; border-radius: var(--r-inner); text-align: left;
+  font-weight: 500; transition: background var(--t-hover); }
+.menu button:hover { background: var(--glass-hi); }
+.menu button svg { color: var(--ink-3); }
+.menu button[data-danger='true'], .menu button[data-danger='true'] svg { color: color-mix(in srgb, var(--clay) 70%, var(--mix-to)); }

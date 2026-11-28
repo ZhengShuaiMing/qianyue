@@ -1,0 +1,8 @@
+flowchart LR
+    S0((START)) --> load_context["load_context<br/>读取岗位"]
+    load_context --> precheck["precheck<br/>前置检查"]
+    precheck -->|缺少公司名| E0((END))
+    precheck --> research["research<br/>联网研究（ReAct）"]
+    research -->|校验始终不合格，或搜索持续失败| E0
+    research --> save["save<br/>保存报告"]
+    save --> E0

@@ -1,0 +1,16 @@
+flowchart LR
+    S0((START)) --> load_context["load_context<br/>读取材料"]
+    load_context --> precheck["precheck<br/>前置检查"]
+    precheck --> E0((END))
+    precheck --> ask["ask<br/>面试官提问"]
+    ask --> listen["listen<br/>等待用户回答（interrupt）"]
+    listen -->|下一轮| ask
+    listen -->|完成 8 轮或用户结束| review["review<br/>复盘"]
+    listen -->|未回答任何题目| finish_empty
+    finish_empty --> E0
+    review --> validate["validate<br/>核对复盘"]
+    validate -->|不合格，最多重试 2 次| review
+    validate -->|重试后仍不合格| E0
+    validate --> wording["wording<br/>核对措辞"]
+    wording --> save["save<br/>保存复盘"]
+    save --> E0

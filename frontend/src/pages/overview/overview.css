@@ -1,0 +1,85 @@
+/* 总览。每个概念一种颜色，卡片、漏斗、折线里同一个概念同一种；
+   折线的蓝、橙、青是用 dataviz 校验脚本挑过的（色弱也分得开），浅色下对比度偏低，所以都配了文字和数字 */
+.overview {
+  --ov-blue: #2a78d6; --ov-blue-soft: #6da7ec; --ov-orange: #eb6834; --ov-aqua: #1baf7a; --ov-violet: #6250d6;
+  --ov-yellow: #e0a000; --ov-green: #0ca30c; --ov-green-soft: #6cc46c; --ov-red: #e34948; --ov-gray: #898781;
+}
+:root[data-theme='dark'] .overview {
+  --ov-blue: #3987e5; --ov-blue-soft: #6da7ec; --ov-orange: #d95926; --ov-aqua: #199e70; --ov-violet: #9085e9;
+  --ov-yellow: #c98500; --ov-green: #0ca30c; --ov-green-soft: #4e9f4e; --ov-red: #e66767; --ov-gray: #898781;
+}
+.overview-loading { color: var(--ink-3); }
+
+.ov-tiles { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
+.ov-tile, .ov-card { padding: 18px 20px; border-radius: var(--r-box); background: var(--box); border: 1px solid var(--box-line); }
+.ov-tile p { margin: 0; }
+.ov-tile-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ov-tile-label { color: var(--ink-2); font-size: var(--fs-small); font-weight: 500; }
+.ov-tile-icon { flex: none; width: 28px; height: 28px; padding: 6px; border-radius: 9px; fill: none; stroke: var(--c); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  background: color-mix(in srgb, var(--c) 14%, transparent); }
+.ov-tile .ov-tile-value { margin-top: 8px; font-size: 32px; font-weight: 600; line-height: 1.15; }
+.ov-tile .ov-tile-note { margin-top: 4px; color: var(--ink-3); font-size: var(--fs-tiny); }
+
+.ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.ov-grid + .ov-card, .ov-card + .ov-card { margin-top: 12px; }
+.ov-grid .ov-card { margin-top: 0; }
+.ov-card h2 { margin: 0; font-size: var(--fs-ui); font-weight: 600; }
+.ov-head-note { margin-left: 10px; color: var(--ink-3); font-size: var(--fs-small); font-weight: 400; }
+.ov-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.ov-hint { margin: 2px 0 16px; color: var(--ink-3); font-size: var(--fs-tiny); }
+.ov-none { margin: 0; color: var(--ink-2); font-size: var(--fs-small); line-height: 1.7; }
+
+/* 漏斗：同一种蓝从浅到深（dataviz 校验脚本按「有序」检查过：深浅单调、相邻两步分得开、最浅一步在卡片底色上看得见） */
+.overview { --ov-step-0: #86b6ef; --ov-step-1: #6d9bd3; --ov-step-2: #5480b8; --ov-step-3: #3c679e; --ov-step-4: #254e84; --ov-step-5: #0d366b; }
+:root[data-theme='dark'] .overview { --ov-step-0: #184f95; --ov-step-1: #3d6caa; --ov-step-2: #6089be; --ov-step-3: #84a6d3; --ov-step-4: #a8c4e7; --ov-step-5: #cde2fb; }
+.ov-funnel svg { display: block; overflow: visible; }
+.ov-funnel-name { fill: var(--ink-2); font-size: 13px; }
+.ov-funnel-value { fill: var(--ink-3); font-size: 12px; font-variant-numeric: tabular-nums; }
+.ov-funnel-count { fill: var(--ink); font-size: 14px; font-weight: 600; }
+
+/* 评分分布：散点图。分数段是同色的浅底，没有底线；点小、半透明，叠在一起时颜色变深 */
+.ov-scatter svg { display: block; }
+.ov-scatter-zone { opacity: 0.09; }
+.ov-scatter-count { fill: var(--ink); font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-scatter-label { fill: var(--ink-3); font-size: 11px; }
+.ov-scatter-dot { opacity: 0.75; }
+
+/* 节奏：图例带合计，折线图 */
+.ov-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 4px 0 8px; font-size: var(--fs-small); color: var(--ink-2); }
+.ov-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.ov-legend i { width: 14px; height: 3px; border-radius: 2px; background: var(--c); }
+.ov-legend strong { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.ov-line { position: relative; }
+.ov-line svg { display: block; outline: none; }
+.ov-line svg:focus-visible { outline: 2px solid var(--ov-blue); outline-offset: 4px; border-radius: 8px; }
+.ov-grid-line { stroke: var(--line); stroke-width: 1; }
+.ov-axis { fill: var(--ink-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+.ov-path { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.ov-dot { stroke: var(--ground); stroke-width: 2; }
+.ov-cross { stroke: var(--line-hi); stroke-width: 1; stroke-dasharray: 3 3; }
+.ov-tip { position: absolute; top: 4px; transform: translateX(-50%); display: grid; gap: 4px; min-width: 128px; padding: 10px 12px; border-radius: 12px; pointer-events: none;
+  background: var(--ground); border: 1px solid var(--line); box-shadow: 0 8px 24px rgb(0 0 0 / 0.12); font-size: var(--fs-tiny); color: var(--ink-2); }
+.ov-tip strong { color: var(--ink); font-size: var(--fs-small); }
+.ov-tip span { display: flex; align-items: center; gap: 8px; }
+.ov-tip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.ov-tip b { margin-left: auto; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* 来源表 */
+.ov-table-wrap { overflow-x: auto; }
+.ov-table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
+.ov-table th, .ov-table td { padding: 10px 12px; text-align: right; white-space: nowrap; border-top: 1px solid var(--line); }
+.ov-table thead th { border-top: 0; color: var(--ink-3); font-weight: 500; font-size: var(--fs-tiny); }
+.ov-table th:first-child { text-align: left; padding-left: 0; }
+.ov-table tbody th { font-weight: 500; }
+.ov-source { display: inline-flex; align-items: center; gap: 8px; }
+.ov-source i { width: 8px; height: 8px; border-radius: 50%; background: var(--dot); }
+.ov-table .ov-share, .ov-table .ov-share-head { width: 150px; text-align: left; }
+.ov-share span { display: inline-block; width: 90px; height: 8px; margin-right: 8px; vertical-align: middle; border-radius: var(--r-pill); background: color-mix(in srgb, var(--ink) 8%, transparent); overflow: hidden; }
+.ov-share i { display: block; height: 100%; border-radius: var(--r-pill); }
+
+@media (max-width: 1280px) { .ov-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .ov-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ov-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) { .ov-tile .ov-tile-value { font-size: 26px; } }

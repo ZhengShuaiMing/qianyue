@@ -1,0 +1,9 @@
+flowchart LR
+    D["documents 表<br/>当前版本"] -->|"sync：新增缺失片段、删除过期片段"| SPLIT["split_markdown<br/>按标题切分，每片最多 400 字"]
+    SPLIT --> EMB["Embedding<br/>jina-embeddings-v2-base-zh，本机运行"]
+    EMB --> Q[("Qdrant 集合 materials")]
+    JD["JD"] -->|"jd_queries：拆分为独立要求，最多 20 条"| QS["多个查询"]
+    QS -->|"每个查询召回 6 个片段"| Q
+    Q --> RR["Rerank<br/>bge-reranker-v2-m3-int8，本机运行<br/>每个查询保留前 2 名"]
+    RR --> RRF["RRF 合并去重<br/>k = 60"]
+    RRF --> EV["证据 E1、E2……<br/>最多 10 条，提供给模型"]

@@ -1,0 +1,81 @@
+/* 成果工具条 */
+.artifact-bar { display: flex; align-items: center; gap: 8px; min-height: 34px; margin-bottom: 16px; }
+.artifact-bar > span { flex: 1; color: var(--ink-3); font-size: var(--fs-small); }
+
+/* 评估报告的头部：分数、三个数字、一句话结论 */
+.report-score-row { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+.report-score { margin: 0; display: flex; align-items: baseline; gap: 8px; }
+.report-score span { font: 700 48px/1 var(--serif); letter-spacing: -0.02em; color: color-mix(in srgb, var(--tint) 66%, var(--mix-to)); font-variant-numeric: tabular-nums; }
+.report-score small { font-size: var(--fs-ui); font-weight: 500; color: var(--ink-3); }
+.report-stats { display: flex; flex-wrap: wrap; gap: 8px; }
+.report-stat { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 14px; border-radius: var(--r-pill); font-weight: 600; font-size: var(--fs-ui);
+  background: var(--glass); border: 1px solid var(--line); box-shadow: inset 0 1px 0 var(--highlight); }
+.report-stat small { font-size: var(--fs-tiny); font-weight: 500; color: var(--ink-3); }
+.report-stat[data-alert='true'] { color: color-mix(in srgb, var(--clay) 70%, var(--mix-to)); }
+.report-summary { margin: 24px 0 0; font-size: var(--fs-lead); line-height: 1.8; color: var(--ink); opacity: 0.9; }
+.report-note { margin: 12px 0 0; color: var(--ink-3); font-size: var(--fs-small); }
+
+/* 报告里的二级分页：文字加下划线，和上面的胶囊区分层级 */
+.report-tabs { display: flex; gap: 28px; margin-top: var(--gap-section); border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.report-tabs button { position: relative; flex: none; padding: 10px 0; color: var(--ink-3); font-weight: 500; transition: color var(--t-fade); }
+.report-tabs button:hover { color: var(--ink); }
+.report-tabs button[aria-selected='true'] { color: var(--ink); font-weight: 600; }
+.report-tabs button::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 1px; background: var(--ink);
+  transform: scaleX(0); transition: transform var(--t-spring) var(--spring); }
+.report-tabs button[aria-selected='true']::after { transform: scaleX(1); }
+.report-tab-body { margin-top: var(--gap-section); animation: fade 200ms ease backwards; }
+.report-keywords { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.report-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 20px; }
+.report-row div { display: grid; gap: 4px; }
+.report-row strong { font-size: var(--fs-ui); font-weight: 600; }
+.report-row strong small { margin-left: 6px; font-size: var(--fs-tiny); font-weight: 400; color: var(--ink-3); }
+.report-row span { font-size: var(--fs-small); color: var(--ink-3); }
+
+.report-blocker { padding: 14px 20px; }
+.report-blocker strong { display: flex; align-items: baseline; gap: 10px; font-weight: 600; line-height: 1.6; }
+.report-blocker strong span { flex: none; padding: 1px 8px; border-radius: var(--r-pill); font-size: var(--fs-tiny);
+  background: color-mix(in srgb, var(--sand) 18%, transparent); color: color-mix(in srgb, var(--sand) 60%, var(--mix-to)); }
+.report-blocker[data-status='confirmed'] strong span { background: color-mix(in srgb, var(--clay) 18%, transparent); color: color-mix(in srgb, var(--clay) 65%, var(--mix-to)); }
+.report-blocker p { margin: 6px 0 0; color: var(--ink-2); font-size: var(--fs-body); line-height: 1.75; }
+
+/* 维度：一行一个，点开看依据 */
+.dim-head { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 140px 64px 18px; align-items: center; gap: 16px;
+  padding: 14px 20px; text-align: left; transition: background var(--t-hover); }
+.dim-head:hover { background: var(--box); }
+.dim:first-child .dim-head { border-radius: var(--r-box) var(--r-box) 0 0; }
+.dim:last-child:not([data-open='true']) .dim-head { border-radius: 0 0 var(--r-box) var(--r-box); }
+.dim-name { display: flex; align-items: baseline; gap: 8px; font-size: var(--fs-ui); font-weight: 500; }
+.dim-name small { font-size: var(--fs-tiny); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.dim-track { height: 6px; border-radius: 3px; background: var(--track); overflow: hidden; }
+.dim-track span { display: block; height: 100%; border-radius: 3px; background: color-mix(in srgb, var(--tint) 85%, var(--mix-to));
+  transform-origin: left; transform: scaleX(var(--w)); animation: grow 700ms var(--spring) 160ms backwards; }
+.dim-track[data-na='true'] { background: repeating-linear-gradient(90deg, var(--line-hi) 0 4px, transparent 4px 8px); }
+.dim-score { text-align: right; font-weight: 600; font-size: var(--fs-ui); font-variant-numeric: tabular-nums; }
+.dim-track[data-na='true'] + .dim-score { font-size: var(--fs-tiny); font-weight: 400; color: var(--ink-3); }
+.dim-head svg { color: var(--ink-3); transition: transform var(--t-spring) var(--spring); }
+.dim[data-open='true'] .dim-head svg { transform: rotate(180deg); }
+.dim-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--t-spring) var(--spring); }
+.dim-body p { overflow: hidden; margin: 0; padding: 0 20px; color: var(--ink-2); font-size: var(--fs-body); line-height: 1.75;
+  opacity: 0; transition: opacity var(--t-fade), padding var(--t-spring) var(--spring); }
+.dim[data-open='true'] .dim-body { grid-template-rows: 1fr; }
+.dim[data-open='true'] .dim-body p { opacity: 1; padding: 0 20px 16px; }
+@keyframes grow { from { transform: scaleX(0); } }
+
+@media (max-width: 720px) {
+  .dim-head { grid-template-columns: minmax(0, 1fr) 64px 18px; }
+  .dim-track { display: none; }
+  .report-row { flex-direction: column; align-items: flex-start; }
+}
+
+/* 通用成果视图 */
+.doc-kv { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; padding: 12px 20px; font-size: var(--fs-body); line-height: 1.7; }
+.doc-kv > span { color: var(--ink-3); }
+.doc-kv .prose { padding: 0; font-size: var(--fs-body); color: var(--ink); }
+.doc-kv .prose p { margin: 0; }
+.doc-lead { margin-top: 24px; font-size: var(--fs-lead); line-height: 1.8; color: var(--ink); }
+.doc-lead p { margin: 0 0 8px; }
+.doc-lead blockquote { margin: 0 0 8px; padding: 0; border: 0; }
+.doc-lead blockquote p { margin: 0; }
+.doc-sections { margin-top: var(--gap-section); }
+@media (max-width: 720px) { .doc-kv { grid-template-columns: 80px minmax(0, 1fr); gap: 12px; padding: 12px 16px; } }

@@ -1,0 +1,24 @@
+/* 「还没有配置 AI 模型」弹窗 */
+/* 要复制的那句话：整段可以选中，助手的话可能有换行 */
+.handoff-sentence { margin: 16px 0 0; padding: 14px 16px; border-radius: var(--r-inner); background: var(--box); border: 1px solid var(--line);
+  font-size: var(--fs-ui); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; user-select: all; }
+/* 正文里去设置的链接、状态里打开结果的链接：带下划线的文字链接 */
+.handoff-link, .handoff-status a { margin: 0 2px; color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-hi);
+  text-underline-offset: 3px; transition: text-decoration-color var(--t-hover); }
+.handoff-link:hover, .handoff-status a:hover { text-decoration-color: currentColor; }
+/* 操作栏最左边：怎么把 Agent 连上迁跃 */
+.handoff-how { margin-right: auto; align-self: center; color: var(--ink-3); font-size: var(--fs-small); transition: color var(--t-hover); }
+.handoff-how:hover { color: var(--ink); }
+/* Agent 做到哪了：一行状态，颜色跟着进行中、完成、失败 */
+.handoff-status { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; padding: 10px 14px; border-radius: var(--r-inner);
+  background: var(--box); font-size: var(--fs-small); line-height: 1.5; animation: fade var(--t-fade) ease backwards; }
+.handoff-status svg { flex: none; width: 15px; height: 15px; }
+.handoff-status[data-tone='active'], .handoff-status[data-tone='running'] { color: color-mix(in srgb, var(--teal) 75%, var(--mix-to)); }
+.handoff-status[data-tone='succeeded'], .handoff-status[data-tone='waiting_user'] { color: color-mix(in srgb, var(--sage) 80%, var(--mix-to)); }
+.handoff-status[data-tone='failed'] { color: color-mix(in srgb, var(--clay) 75%, var(--mix-to)); }
+.handoff-status[data-tone='cancelled'] { color: var(--ink-3); }
+.handoff-cancel { margin-left: auto; padding: 2px 4px; border: 0; background: none; color: var(--ink-3); font: inherit; cursor: pointer;
+  border-radius: 6px; transition: color var(--t-hover); }
+.handoff-cancel:hover { color: var(--ink); }
+.handoff-cancel:active { opacity: 0.7; }
+.handoff-cancel:disabled { cursor: not-allowed; opacity: 0.5; }

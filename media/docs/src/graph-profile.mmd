@@ -1,0 +1,8 @@
+flowchart LR
+    S0((START)) --> load["load<br/>读取岗位和材料"]
+    load --> precheck["precheck<br/>前置检查"]
+    precheck -->|少于 2 个或多于 15 个岗位| E0((END))
+    precheck --> analyze["analyze<br/>归纳能力"]
+    analyze -->|校验始终不合格| E0
+    analyze --> save["save<br/>保存画像"]
+    save --> E0

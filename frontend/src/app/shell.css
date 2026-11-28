@@ -1,0 +1,10 @@
+.app { position: relative; min-height: 100vh; isolation: isolate; }
+.page { max-width: var(--page-max); margin: 0 auto; padding: 24px var(--page-x) 120px; }
+.page-title { margin: 8px 0 var(--gap-section); font: 700 var(--fs-display)/1.15 var(--serif); letter-spacing: 0.01em; }
+/* 标题下面的几句说明：一句一行，窄屏放不下时句子自己换行 */
+.page-intro { margin: -8px 0 var(--gap-section); color: var(--ink-2); line-height: 1.8; }
+.page-intro span { display: block; }
+
+@media (max-width: 720px) {
+  .page { padding: 16px var(--page-x) 96px; }
+}

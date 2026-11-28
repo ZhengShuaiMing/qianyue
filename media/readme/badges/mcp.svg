@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="82" height="22" viewBox="0 0 82 22" role="img" aria-labelledby="title">
+  <title id="title">MCP · HTTP</title>
+  <path fill="#414044" d="M0 0h39v22H0z"/>
+  <path fill="#67516d" d="M39 0h43v22H39z"/>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="11">
+    <text x="19.5" y="15">MCP</text>
+    <text x="60.5" y="15">HTTP</text>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+/* 截图：拖进来时盖一层提示，预览是一排小方块 */
+.shot-box[data-dragging='true']::after { content: '松开就加上这张截图'; position: absolute; inset: 0; display: grid; place-items: center; border-radius: inherit;
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--ground) 82%, transparent);
+  color: var(--ink); font-weight: 600; z-index: 3; pointer-events: none; }
+/* 能放截图的输入框：外观和多行输入框一样，小图在框里上面，下面打字 */
+.shot-box { position: relative; display: grid; gap: 12px; padding: 12px 16px; border-radius: var(--r-inner); background: var(--box); border: 1px solid var(--line);
+  transition: border-color var(--t-hover); }
+.shot-box:focus-within { border-color: color-mix(in srgb, var(--accent) 55%, var(--line-hi)); }
+.shot-box[data-disabled='true'] { opacity: 0.6; }
+.shot-box-text { display: block; width: 100%; min-height: 174px; padding: 0; border: 0; background: none; color: inherit; font-size: var(--fs-body); line-height: 1.7; resize: vertical; }
+.shot-box-text:focus, .shot-box-text:focus-visible { outline: none; }
+/* 放了截图后，整个框还是原来那么高：小图一行 56 + 间隔 12 从打字区里扣 */
+.shot-box[data-has-shots='true'] .shot-box-text { min-height: 106px; }
+.shot-box[data-size='short'] .shot-box-text { min-height: 130px; }
+.shot-box[data-size='short'][data-has-shots='true'] .shot-box-text { min-height: 62px; }
+/* 小图只排一行，多了横向滚，框不会变高 */
+.shot-box .shot-list { flex-wrap: nowrap; overflow-x: auto; padding: 6px 6px 0 0; margin: -6px 0 0; scrollbar-width: thin; }
+.shot-box .shot-list li { flex: none; }
+/* 「选择图片」：一个文字链接，点了、用键盘选中都不加框 */
+.shot-pick { padding: 0; border: 0; background: none; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; }
+.shot-pick:hover, .shot-pick:focus-visible { text-decoration: underline; }
+.shot-pick:focus, .shot-pick:focus-visible { outline: none; box-shadow: none; }
+.shot-list { display: flex; flex: 1; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.shot-list li { position: relative; }
+.shot-list img, .shot-more { display: block; width: 56px; height: 56px; border-radius: 10px; object-fit: cover; object-position: top; border: 1px solid var(--line); background: var(--box); }
+.shot-more { display: grid; place-items: center; color: var(--ink-3); font-size: 22px; cursor: pointer; }
+.shot-more:hover { color: var(--ink); border-color: var(--line-hi); }
+.shot-remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; display: grid; place-items: center; padding: 0; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--ground); color: var(--ink-2); cursor: pointer; }
+.shot-remove svg { width: 12px; height: 12px; }

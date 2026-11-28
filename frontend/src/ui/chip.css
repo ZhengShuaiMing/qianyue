@@ -1,0 +1,11 @@
+.chip { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 14px; border-radius: var(--r-pill);
+  font-size: var(--fs-small); font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+.chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 0 1px var(--line); }
+/* --tint 由使用它的页面给出：当前岗位的结论色 */
+.chip[data-tinted='true'] { color: color-mix(in srgb, var(--tint) 72%, var(--mix-to)); background: color-mix(in srgb, var(--tint) 16%, transparent);
+  border-color: color-mix(in srgb, var(--tint) 40%, transparent); }
+/* 可以点的标签：带一个向下的箭头，鼠标放上去变亮，表示点了能改 */
+.chip-action { cursor: pointer; padding-right: 10px; color: var(--ink); transition: background var(--t-hover), border-color var(--t-hover); }
+.chip-action svg { width: 15px; height: 15px; margin-left: -2px; color: var(--ink-3); transition: color var(--t-hover); }
+.chip-action:hover { background: var(--glass-hi); border-color: var(--line-hi); }
+.chip-action:hover svg { color: var(--ink); }

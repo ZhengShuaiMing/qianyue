@@ -1,0 +1,8 @@
+.group + .group { margin-top: var(--gap-section); }
+.group-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; margin: 0 0 10px 4px; }
+.group-head h3 { display: flex; align-items: baseline; gap: 10px; min-width: 0; margin: 0; font-size: var(--fs-ui); font-weight: 600; color: var(--ink-2); }
+/* 组名和说明都在一行里；说明放不下时用「…」省略，悬停看全文（ui/Group.tsx） */
+.group-head h3 { white-space: nowrap; }
+.group-head small { font-size: var(--fs-tiny); font-weight: 400; color: var(--ink-3); }
+.box { border-radius: var(--r-box); background: var(--box); border: 1px solid var(--box-line); }
+.box > * + * { border-top: 1px solid var(--box-line); }

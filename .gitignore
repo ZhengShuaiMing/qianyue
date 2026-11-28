@@ -1,0 +1,31 @@
+# 用户数据与密钥：永不入库
+data/
+.env
+.env.*
+!.env.example
+
+# 后端 / Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# 前端
+node_modules/
+dist/
+!frontend/dist/
+!frontend/dist/**
+frontend/dist-demo/
+
+# 启动脚本（start.sh / start.ps1）自动装到项目里的 uv
+/tools/
+
+# 编辑器与操作系统
+.vscode/
+.idea/
+.DS_Store
+
+# 运行与调试产物
+demo-data/
+.playwright-cli/

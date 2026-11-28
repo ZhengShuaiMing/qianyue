@@ -1,0 +1,89 @@
+/* 采集前检查 Chrome：一条就够，放在说明和表单之间 */
+.collect-chrome { display: flex; align-items: center; gap: 12px; margin: 0 0 var(--gap-section); padding: 9px 10px 9px 18px;
+  border-radius: var(--r-pill); background: var(--box); border: 1px solid var(--box-line); color: var(--ink-2); font-size: var(--fs-small); }
+.collect-chrome > i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+.collect-chrome[data-state='missing'] > i { background: var(--sand); }
+.collect-chrome > span { flex: 1; min-width: 0; display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 8px; }
+.collect-chrome a { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-hi); text-underline-offset: 3px; }
+.collect-chrome code { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-3); font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 12.5px; }
+/* 文字在「重新检测 / 检测中… / 已检测」之间切换，宽度固定，按钮不跳 */
+.collect-chrome-retry { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 7.5em; height: 30px; padding: 0 12px;
+  border-radius: var(--r-pill); color: var(--ink-3); font-size: var(--fs-small); transition: background var(--t-hover), color var(--t-hover); }
+.collect-chrome-retry svg { flex: none; width: 14px; height: 14px; }
+.collect-chrome-retry:hover:not(:disabled) { background: var(--glass); color: var(--ink); }
+.collect-chrome-retry[data-phase='checking'] { cursor: default; }
+.collect-chrome-retry[data-phase='checking'] svg { animation: spin 0.8s linear infinite; }
+.collect-chrome-retry[data-phase='done'] { color: var(--ink-2); }
+
+.collect-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.collect-form .group + .group { margin-top: var(--gap-section); }
+
+.collect-platform { display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 18px; }
+.collect-platform label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; white-space: nowrap; font-weight: 500; cursor: pointer; }
+.collect-platform label input { width: 16px; height: 16px; accent-color: var(--accent); }
+.collect-platform label i { width: 8px; height: 8px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 0 1px var(--line); }
+/* 平台名占同样宽，后面的「要先登录…」上下对齐 */
+.collect-platform-name { min-width: 5.5em; }
+.collect-platform label small { color: var(--ink-3); font-size: var(--fs-tiny); font-weight: 400; }
+.collect-platform[data-on='false'] label { color: var(--ink-2); }
+.collect-count-wrap { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-3); font-size: var(--fs-small); }
+.collect-count { width: 64px; height: 32px; padding: 0 10px; border-radius: var(--r-inner); background: var(--glass); border: 1px solid var(--line); text-align: center; font-variant-numeric: tabular-nums; }
+.collect-count:focus { border-color: color-mix(in srgb, var(--accent) 55%, var(--line-hi)); }
+.collect-login { height: 32px; padding: 0 12px; border-radius: var(--r-pill); color: var(--ink-3); font-size: var(--fs-small); transition: background var(--t-hover), color var(--t-hover); }
+.collect-login:hover { background: var(--glass); color: var(--ink); }
+
+.collect-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.collect-field { display: grid; gap: 6px; }
+.collect-field-wide { grid-column: 1 / -1; }
+.collect-field span { display: flex; align-items: baseline; gap: 8px; min-width: 0; white-space: nowrap; font-size: var(--fs-small); color: var(--ink-3); font-weight: 600; }
+.collect-field small { font-size: var(--fs-tiny); font-weight: 400; }
+.collect-field input { height: 44px; padding: 0 16px; border-radius: var(--r-inner); background: var(--box); border: 1px solid var(--line); }
+.collect-field input:focus { border-color: color-mix(in srgb, var(--accent) 55%, var(--line-hi)); }
+.collect-field input:focus-visible, .collect-count:focus-visible { outline: none; }
+.collect-switch { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; cursor: pointer; }
+.collect-switch input { flex: none; width: 16px; height: 16px; margin-top: 3px; accent-color: var(--accent); }
+
+.collect-submit { display: flex; align-items: center; gap: 16px; margin-top: var(--gap-section); padding: 14px 14px 14px 22px; border-radius: var(--r-pill);
+  background: var(--box); border: 1px solid var(--box-line); }
+.collect-submit span { flex: 1; color: var(--ink-2); font-size: var(--fs-body); }
+.collect-submit span[data-tone='error'], .collect-note[data-tone='error'] { color: color-mix(in srgb, var(--clay) 70%, var(--mix-to)); }
+.collect-note { margin: 0; padding: 12px 18px; font-size: var(--fs-small); }
+
+.collect-side { position: sticky; top: 88px; display: grid; gap: var(--gap-section); }
+.collect-side .group + .group { margin-top: 0; }
+.collect-lines { list-style: none; margin: 0; padding: 14px 20px; display: grid; gap: 6px; font-size: var(--fs-small); color: var(--ink-2); max-height: 320px; overflow-y: auto; }
+.collect-lines li { animation: rise var(--t-spring) var(--spring) backwards; }
+.collect-lines li:last-child { color: color-mix(in srgb, var(--teal) 75%, var(--mix-to)); font-weight: 600; }
+.collect-result { padding: 12px 20px; }
+.collect-result strong { font-size: var(--fs-body); font-weight: 600; }
+.collect-result p { margin: 4px 0 0; color: var(--ink-2); font-size: var(--fs-small); line-height: 1.7; }
+.collect-result[data-status='blocked'] strong { color: color-mix(in srgb, var(--sand) 70%, var(--mix-to)); }
+.collect-result-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 20px; }
+.collect-result-foot span { flex: 1; color: var(--ink-2); font-weight: 600; }
+.collect-link { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--line-hi); text-underline-offset: 3px; }
+.collect-record-head { width: 100%; display: flex; align-items: center; gap: 14px; padding: 12px 16px 12px 20px; text-align: left; transition: background var(--t-hover); }
+.collect-record-head:hover, .collect-record[data-open='true'] .collect-record-head { background: var(--glass); }
+.collect-record-time { flex: none; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: var(--fs-small); }
+.collect-record-what { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.collect-record-meta { flex: none; display: inline-flex; align-items: center; gap: 10px; color: var(--ink-3); font-size: var(--fs-small); }
+.collect-record-meta small[data-status='failed'], .collect-record-meta small[data-status='waiting_user'] { color: color-mix(in srgb, var(--sand) 70%, var(--mix-to)); }
+.collect-record-meta small[data-status='running'] { color: color-mix(in srgb, var(--teal) 75%, var(--mix-to)); font-weight: 600; }
+.collect-record-meta svg { width: 16px; height: 16px; transition: transform var(--t-hover); }
+.collect-record[data-open='true'] .collect-record-meta svg { transform: rotate(180deg); }
+/* 展开的一条是一个整体：标题和内容同一个底色，内容里不画分隔线，不然会被看成另一条记录 */
+.collect-record[data-open='true'] { background: var(--glass); }
+.collect-record[data-open='true'] .collect-record-head { background: none; }
+.collect-record-body { padding: 0 0 6px; }
+.collect-record-body .collect-result { padding: 6px 20px 8px; }
+.collect-record-body .collect-result-foot { padding: 6px 20px 10px; }
+
+@media (max-width: 1100px) {
+  .collect-split { grid-template-columns: minmax(0, 1fr); }
+  .collect-side { position: static; }
+}
+@media (max-width: 720px) {
+  .collect-fields { grid-template-columns: 1fr; }
+  .collect-submit { flex-direction: column; align-items: stretch; border-radius: var(--r-card); }
+}
+
+.collect-progress { padding: 14px 20px; }

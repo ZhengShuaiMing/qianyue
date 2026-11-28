@@ -1,0 +1,12 @@
+flowchart LR
+    S0((START)) --> load_materials["load_materials<br/>读取材料"]
+    load_materials --> precheck["precheck<br/>前置检查"]
+    precheck --> E0((END))
+    precheck --> retrieve["retrieve<br/>检索经历"]
+    retrieve --> experiences["experiences<br/>联网检索面经"]
+    experiences --> generate["generate<br/>预测问题并准备回答"]
+    generate --> validate["validate<br/>核对内容"]
+    validate -->|不合格，最多重试 2 次| generate
+    validate --> save["save<br/>保存准备材料"]
+    validate -->|重试后仍不合格| E0
+    save --> E0
